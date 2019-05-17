@@ -1,2 +1,0 @@
-# activityHook
-Created with CodeSandbox
