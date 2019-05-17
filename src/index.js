@@ -70,7 +70,7 @@ function useActivityMonitor({
         clearTimeout(idleTimeRef.current);
       };
     }
-  }, [events, timeout, reset]);
+  }, [events, timeout, reset, active]);
 
   return { promptUser, restoreSession, killSession };
 }
