@@ -1,4 +1,4 @@
-# useActivityMonitor Hook! 👀
+# useActivityMonitor Hook!  👀
 
 ## How do I use `useActivityMonitor`?
 
@@ -13,6 +13,6 @@ const { promptUser, restoreSession, killSession } = useActivityMonitor({
 
 `useActivityMonitor` returns three useful properties - `promptUser`, `restoreSession`, and `killSession`
 
-* `promptUser` is a `boolean` that indicates if the provided `timeout` (ms) has passed
+* `promptUser` is a `boolean` that indicates if the provided `timeout` (ms) has passed.
 * `restoreSession` is a callback function that will set `promptUser` to `false` and reset the internal timer.
 * `killSession` is a callback function that will also set `promptUser` to `false` but kill the internal timer completely.
