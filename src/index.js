@@ -76,17 +76,18 @@ function useActivityMonitor({
 }
 
 function App() {
-  const seconds = 1;
+  const SECONDS = 1;
+  const [authed, setAuthed] = React.useState(true);
   const { promptUser, resetTimer, killSession } = useActivityMonitor({
-    timeout: 1000 * seconds,
-    onKillSession: () => alert("successfully logged out! 🚪")
+    timeout: 1000 * SECONDS,
+    onKillSession: () => setAuthed(false)
   });
 
   const handleLogout = () => killSession();
 
   return (
     <>
-      <h1>Wait {seconds} seconds...</h1>
+     <h1>{ authed ? `Wait ${SECONDS} seconds...` : "You've been succesfully logged out! 🚪"}</h1>
       <Dialog open={promptUser}>
         <div style={{ padding: "1em" }}>
           <h1>Are you still there?</h1>
