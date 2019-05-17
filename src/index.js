@@ -12,7 +12,7 @@ function useActivityMonitor({
     (state, action) => {
       switch (action.type) {
         case "KILL_SESSION":
-          return { ...state, promptUser: false, active: false  };
+          return { ...state, promptUser: false, active: false };
         case "PROMPT_USER":
           return { ...state, promptUser: true };
         case "RESET_IDLE_TIMER":
@@ -32,21 +32,21 @@ function useActivityMonitor({
 
   const { reset, promptUser, active } = state;
 
-  const resetTimer = () => dispatch({ type: "RESET_IDLE_TIMER" });
+  const restoreSession = () => dispatch({ type: "RESET_IDLE_TIMER" });
   const killSession = () => {
-    dispatch({ type: "KILL_SESSION" }); 
+    dispatch({ type: "KILL_SESSION" });
     onKillSession();
-};
+  };
 
   React.useEffect(() => {
-    if (active){
+    if (active) {
       function onResetIdleTimer() {
-        resetTimer();
+        restoreSession();
         // TODO: clear old timer and set new timer
         clearTimeout(idleTimeRef.current);
         idleTimeRef.current = setTimeout(notify, timeout);
       }
-  
+
       function notify() {
         dispatch({ type: "PROMPT_USER" });
         for (let type of events) {
@@ -54,15 +54,15 @@ function useActivityMonitor({
         }
         clearTimeout(idleTimeRef.current);
       }
-  
+
       // TODO: start timer
       idleTimeRef.current = setTimeout(notify, timeout);
       functionRef.current = onResetIdleTimer;
-  
+
       for (let type of events) {
         window.addEventListener(type, functionRef.current, false);
       }
-  
+
       return () => {
         for (let type of events) {
           window.removeEventListener(type, functionRef.current);
@@ -72,13 +72,13 @@ function useActivityMonitor({
     }
   }, [events, timeout, reset]);
 
-  return { promptUser, resetTimer, killSession };
+  return { promptUser, restoreSession, killSession };
 }
 
 function App() {
   const SECONDS = 1;
   const [authed, setAuthed] = React.useState(true);
-  const { promptUser, resetTimer, killSession } = useActivityMonitor({
+  const { promptUser, restoreSession, killSession } = useActivityMonitor({
     timeout: 1000 * SECONDS,
     onKillSession: () => setAuthed(false)
   });
@@ -87,13 +87,17 @@ function App() {
 
   return (
     <>
-     <h1>{ authed ? `Wait ${SECONDS} seconds...` : "You've been succesfully logged out! 🚪"}</h1>
+      <h1>
+        {authed
+          ? `Wait ${SECONDS} seconds...`
+          : "You've been succesfully logged out! 🚪"}
+      </h1>
       <Dialog open={promptUser}>
         <div style={{ padding: "1em" }}>
           <h1>Are you still there?</h1>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <button onClick={handleLogout}>Logout?</button>
-            <button onClick={resetTimer}>Continue Session</button>
+            <button onClick={restoreSession}>Continue Session</button>
           </div>
         </div>
       </Dialog>
