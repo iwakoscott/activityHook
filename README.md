@@ -2,7 +2,11 @@
 
 ## How do I use `useActivityMonitor`?
 
-Awesome question 🚀! To get started using the `useActivityMonitor` hook, all you need to provide an `object` with a `timeout` in milliseconds and an optional callback function - `onKillSession` which will be called after the user invokes the `killSession` handler.
+Awesome question 🚀! To get started using the `useActivityMonitor` hook, all you need to provide an `object` with 
+
+* `timeout` - `number` (in milliseconds,)
+* `events` - an optional array of event name as `string` _default_ `["load", "mousemove", "mousedown", "click", "scroll", "keypress"]`,
+* `onKillSession` -  an optional callback function which will be called after the user invokes the `killSession` handler.
 
 ```jsx
 const { promptUser, restoreSession, killSession } = useActivityMonitor({
