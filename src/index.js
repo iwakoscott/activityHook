@@ -51,12 +51,12 @@ function useActivityMonitor({
     functionRef.current = onResetIdleTimer;
 
     for (let type of events) {
-      window.addEventListener(type, onResetIdleTimer, false);
+      window.addEventListener(type, functionRef.current, false);
     }
 
     return () => {
       for (let type of events) {
-        window.removeEventListener(type, onResetIdleTimer);
+        window.removeEventListener(type, functionRef.current);
       }
       clearTimeout(idleTimeRef.current);
     };
